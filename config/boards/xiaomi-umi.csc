@@ -1,6 +1,6 @@
 # Generate kernel and rootfs image for Qcom ABL booting
 declare -g BOARD_NAME="Xiaomi Umi"
-declare -g BOARD_MAINTAINER="FantasyGmm"
+declare -g BOARD_MAINTAINER=""
 declare -g BOARDFAMILY="qcom-abl"
 declare -g KERNEL_TARGET="sm8250"
 declare -g KERNELPATCHDIR="arm64-sm8250"
