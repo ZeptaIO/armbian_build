@@ -268,14 +268,14 @@ chmod 700 /root/.ssh
 cp -vf /tmp/overlay/application-git/id_rsa* /root/.ssh
 cp -vf /tmp/overlay/github-host-keys /root/.ssh/known_hosts
 chmod 600 /root/.ssh/*
-git clone git@github.com:sans-ltd/zepta_prod_app.git /tmp/app
+git clone git@github.com:ZeptaIO/bc_production_configuration /tmp/app
 rm -fv /root/.ssh/id_rsa*
 
 # Key for remote Access to the Armbian Device
 cp -vf /tmp/app/root-user/id_rsa.pub /root/.ssh/authorized_keys
 chmod 600 /root/.ssh/*
 # Block root login on console with goofy password.
-passwd -d root
+passwd --lock root
 
 echo Configuring the locale
 # taken from packages/bsp/common/usr/lib/armbian/armbian-firstlogin
