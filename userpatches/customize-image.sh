@@ -257,7 +257,7 @@ echo ---------------------------------------------------------------------------
 echo Disable Armbian interactive config, disable root login, enable display of IP address
 rm -vf /root/.not_logged_in_yet
 cp -vf /tmp/overlay/getty-override.conf /etc/systemd/system/getty\@.service.d/override.conf
-cp -vf /tmp/overlay/getty-override.conf /etc/systemd/system/serial-getty\@.service.d/override.conf
+cp -vf /tmp/overlay/serial-getty-override.conf /etc/systemd/system/serial-getty\@.service.d/override.conf
 cp -vf /tmp/overlay/customize-issue.sh /etc
 
 echo Configuring remote root access via ssh key
@@ -330,10 +330,10 @@ usermod -a -G gpio node-red     # Allow access to gpio
 usermod -a -G dialout node-red  # Allow access to RS-232
 
 cp -v /tmp/overlay/nodered.service /etc/systemd/system
-{
-	echo "systemctl enable nodered"
-	echo "systemctl start nodered"
-} >> /usr/lib/armbian/armbian-firstrun
+sed -i '/systemctl\ disable\ armbian-firstrun/i \
+systemctl enable nodered \
+systemctl start nodered \
+' /usr/lib/armbian/armbian-firstrun
 
 echo ------------------------------------------------------------------------------------
 echo Cleaning up
