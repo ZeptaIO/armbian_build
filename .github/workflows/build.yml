@@ -15,7 +15,8 @@ jobs:
       env:
           SSH_AUTH_SOCK: userpatches/overlay/ssh_agent.sock
       run: |
-          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          pwd
+          ssh-agent -a $SSH_AUTH_SOCK
           ssh-add - <<< "${{ secrets.FLORIAN_MEYER_ACCESS_BC_PRODUCTION_REPOSITORY }}"
           
     - name: Building using build.sh
