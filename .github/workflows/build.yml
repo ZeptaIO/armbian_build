@@ -11,6 +11,13 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Setup SSH Keys and known_hosts
+      env:
+          SSH_AUTH_SOCK: userpatches/overlay/ssh_agent.sock
+      run: |
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add - <<< "${{ secrets.FLORIAN_MEYER_ACCESS_BC_PRODUCTION_REPOSITORY }}"
+          
     - name: Building using build.sh
       run: |
         ./build.sh
