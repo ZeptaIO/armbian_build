@@ -17,6 +17,8 @@ LINUXFAMILY=$2
 BOARD=$3
 BUILD_DESKTOP=$4
 
+set -e
+
 Main() {
 	case $RELEASE in
 		stretch)
@@ -249,6 +251,9 @@ echo ---------------------------------------------------------------------------
 echo env:
 env
 echo ------------------------------------------------------------------------------------
+echo Installing additional packages
+apt update && apt install -y git vim vnstat
+echo ------------------------------------------------------------------------------------
 echo Disable Armbian interactive config, disable root login, enable display of IP address
 rm -vf /root/.not_logged_in_yet
 cp -vf /tmp/overlay/getty-override.conf /etc/systemd/system/getty\@.service.d/override.conf
@@ -258,8 +263,19 @@ cp -vf /tmp/overlay/customize-issue.sh /etc
 echo Configuring remote root access via ssh key
 mkdir -vp /root/.ssh
 chmod 700 /root/.ssh
-cp -v /tmp/overlay/root-user/id_rsa.pub /root/.ssh/authorized_keys
+
+# Prepare GitHub access during build to clone the application repo:
+cp -vf /tmp/overlay/application-git/id_rsa* /root/.ssh
+cp -vf /tmp/overlay/github-host-keys /root/.ssh/known_hosts
 chmod 600 /root/.ssh/*
+git clone git@github.com:sans-ltd/zepta_prod_app.git /tmp/app
+rm -fv /root/.ssh/id_rsa*
+
+# Key for remote Access to the Armbian Device
+cp -vf /tmp/app/root-user/id_rsa.pub /root/.ssh/authorized_keys
+chmod 600 /root/.ssh/*
+# Block root login on console with goofy password.
+passwd -d root
 
 echo Configuring the locale
 # taken from packages/bsp/common/usr/lib/armbian/armbian-firstlogin
@@ -320,6 +336,5 @@ cp -v /tmp/overlay/nodered.service /etc/systemd/system
 } >> /usr/lib/armbian/armbian-firstrun
 
 echo ------------------------------------------------------------------------------------
-echo Installing additional packages
-apt install -y vnstat vim
-
+echo Cleaning up
+rm -rfv /tmp/app
