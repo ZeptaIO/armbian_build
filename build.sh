@@ -9,7 +9,7 @@ ls -l $HERE/userpatches/overlay
 echo ---------------------------------------
 
 SSH_AUTH_SOCK=$HERE/userpatches/overlay/ssh_agent.sock
-if [ ! -s $SSH_AUTH_SOCK ]; then 
+if [ ! -S $SSH_AUTH_SOCK ]; then 
     echo No SSH Agent running on $SSH_AUTH_SOCK.
     PRIVATE_KEY=$1
     if [ "x$PRIVATE_KEY" == "x" ]; then
