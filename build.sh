@@ -1,12 +1,13 @@
 #!/bin/bash
 
+HERE=$(dirname $0)
+
 echo Running in $(pwd)
 echo ---------------------------------------
 echo userpatches/overlay:
 ls -l $HERE/userpatches/overlay
 echo ---------------------------------------
 
-HERE=$(dirname $0)
 SSH_AUTH_SOCK=$HERE/userpatches/overlay/ssh_agent.sock
 if [ ! -s $SSH_AUTH_SOCK ]; then 
     echo No SSH Agent running on $SSH_AUTH_SOCK.
