@@ -221,7 +221,7 @@ function prepare_partitions() {
 
 	CHECK_LOOP_FOR_SIZE="no" check_loop_device "$LOOP" # initially loop is zero sized, ignore it.
 
-	run_host_command_logged losetup "${LOOP}" "${SDCARD}".raw # @TODO: had a '-P- here, what was it?
+	run_host_command_logged losetup -P "${LOOP}" "${SDCARD}".raw # @TODO: had a '-P- here, what was it?
 
 	# loop device was grabbed here, unlock
 	flock -u $FD
