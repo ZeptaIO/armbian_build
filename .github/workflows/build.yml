@@ -1,0 +1,23 @@
+name: Build Image for Production Computer
+
+on:
+  push:
+    branches: [ "baitchecker_production_computer" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Building using build.sh
+      run: |
+        ./build.sh
+
+    - name: Archive Armbian Image
+      uses: actions/upload-artifact@v3
+      with:
+        name: images
+        path: 
+          output/images/*
