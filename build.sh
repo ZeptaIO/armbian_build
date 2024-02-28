@@ -1,5 +1,11 @@
 #!/bin/bash
 
+echo Running in $(pwd)
+echo ---------------------------------------
+echo userpatches/overlay:
+ls -l $HERE/userpatches/overlay
+echo ---------------------------------------
+
 HERE=$(dirname $0)
 SSH_AUTH_SOCK=$HERE/userpatches/overlay/ssh_agent.sock
 if [ ! -s $SSH_AUTH_SOCK ]; then 
@@ -19,9 +25,4 @@ if [ ! -s $SSH_AUTH_SOCK ]; then
 fi
 # Build a minimal image without asking questions. 
 # The content itself is customized via userpatches/customize_image.sh
-echo Running in $(pwd)
-echo ---------------------------------------
-echo userpatches/overlay:
-ls $HERE/userpatches/overlay
-echo ---------------------------------------
 $HERE/compile.sh BOARD=rockpi-4cplus BRANCH=current RELEASE=bookworm KERNEL_CONFIGURE=no BUILD_MINIMAL=yes
