@@ -252,7 +252,14 @@ echo env:
 env
 echo ------------------------------------------------------------------------------------
 echo Installing additional packages
-apt update && apt install -y git vim vnstat
+apt update && apt install -y \
+	git vim vnstat net-tools \
+	python3 \
+    python3-pip \
+    python3-venv \
+	python-is-python3 \
+	default-mysql-server default-mysql-client
+
 echo ------------------------------------------------------------------------------------
 echo Disable Armbian interactive config, disable root login, enable display of IP address
 rm -vf /root/.not_logged_in_yet
@@ -316,9 +323,12 @@ pushd /opt/node-red/base
 npm install node-red
 # Install additional useful palette modules:
 npm install node-red-contrib-modbus
+npm install node-red-node-serialport
 npm install node-red-contrib-owfs
 npm install node-red-contrib-protobuf
 npm install node-red-dashboard
+npm install node-red-contrib-ui-actions
+npm install node-red-node-mysql
 popd
 
 # Prepare access to gpio
@@ -334,8 +344,30 @@ cp -v /tmp/overlay/nodered.service /etc/systemd/system
 sed -i '/systemctl\ disable\ armbian-firstrun/i \
 systemctl enable nodered \
 systemctl start nodered \
+mysql --user=root < /var/lib/node-red/Setup-PCB-Production-Test.sql
 ' /usr/lib/armbian/armbian-firstrun
 
+echo ------------------------------------------------------------------------------------
+echo Install Platform IO for node-red user
+python3 -m venv /var/lib/node-red/.platformio/penv
+/var/lib/node-red/.platformio/penv/bin/python3 -m pip install --upgrade pip setuptools
+/var/lib/node-red/.platformio/penv/bin/python3 -m pip install -U platformio
+chown -R node-red:node-red /var/lib/node-red/.platformio
+su node-red -c "/var/lib/node-red/.platformio/penv/bin/pio pkg install --global --tool tool-esptoolpy"
+
+pushd /tmp/app
+bc_production_configuration_git_version=$(git log -1 --format=%H)
+popd
+echo Set GIT Versions:
+echo armbian_build_git_version: $(cat /tmp/overlay/armbian_build_git_version)
+echo bc_production_configuration_git_version: $bc_production_configuration_git_version
+echo $bc_production_configuration_git_version > /var/lib/node-red/bc_production_configuration_git_version
+cp -v /tmp/overlay/armbian_build_git_version /var/lib/node-red
+
+echo Installing Production Configuration:
+cp -av /tmp/app/pcb_production_v1/. /var/lib/node-red/
+
+chown -R node-red:node-red /var/lib/node-red/
 echo ------------------------------------------------------------------------------------
 echo Cleaning up
 rm -rfv /tmp/app
