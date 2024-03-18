@@ -3,6 +3,7 @@ name: Build Image for Production Computer
 on:
   push:
     branches: [ "baitchecker_production_computer" ]
+  workflow_dispatch:
 
 jobs:
   build:
