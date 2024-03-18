@@ -299,6 +299,8 @@ locale-gen "${LOCALES}" > /dev/null 2>&1
 	echo "export LANGUAGE=$LOCALES"
 } >> /etc/profile
 
+echo Enabling USB 3.0 ports ...
+echo overlays=dwc3-0-host rockpi4cplus-usb-host >> /boot/armbianEnv.txt
 echo ------------------------------------------------------------------------------------
 echo Installing NodeRED
 
