@@ -123,6 +123,10 @@ systemctl start nodered \
 mysql --user=root < /var/lib/node-red/Setup-PCB-Production-Test.sql
 ' /usr/lib/armbian/armbian-firstrun
 
+echo Install the USB drive auto mounter
+cp -v /tmp/overlay/99-usb-mount.rules /etc/udev/rules.d/
+cp -v /tmp/overlay/usb-mount\@.service /etc/systemd/system/
+mkdir -p /stick
 echo ------------------------------------------------------------------------------------
 echo Install Platform IO for node-red user
 python3 -m venv /var/lib/node-red/.platformio/penv

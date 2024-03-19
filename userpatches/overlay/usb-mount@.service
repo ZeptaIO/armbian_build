@@ -1,0 +1,8 @@
+[Unit]
+Description=Mount USB Drive on %i
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=mount /dev/%i /stick -o uid=node-red -o gid=node-red
+ExecStop=umount /stick
