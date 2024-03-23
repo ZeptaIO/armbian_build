@@ -1,5 +1,35 @@
+From 275e9c8c220de5ad074b9444ad6d016d112a123c Mon Sep 17 00:00:00 2001
+From: Douglas Anderson <dianders@chromium.org>
+Date: Mon, 11 Jul 2016 19:05:42 +0800
+Subject: [PATCH 16/46] drm/rockchip: dw_hdmi: Use auto-generated tables
+
+The previous tables for mpll_cfg and curr_ctrl were created using the
+20-pages of example settings provided by the PHY vendor.  Those
+example settings weren't particularly dense, so there were places
+where we were guessing what the settings would be for 10-bit and
+12-bit (not that we use those anyway).  It was also always a lot of
+extra work every time we wanted to add a new clock rate since we had
+to cross-reference several tables.
+
+In <http://crosreview.com/285855> I've gone through the work to figure
+out how to generate this table automatically.  Let's now use the
+automatically generated table and then we'll never need to look at it
+again.
+
+We only support 8-bit mode right now and only support a small number
+of clock rates and and I've verified that the only 8-bit rate that was
+affected was 148.5.  That mode appears to have been wrong in the old
+table.
+
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Yakir Yang <ykk@rock-chips.com>
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+---
+ drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c | 130 +++++++++++---------
+ 1 file changed, 69 insertions(+), 61 deletions(-)
+
 diff --git a/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c b/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-index fe4f9556239ac..cb43e7b47157d 100644
+index 107dab8d5919..ce726482aaf6 100644
 --- a/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
 +++ b/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
 @@ -91,80 +91,88 @@ static struct rockchip_hdmi *to_rockchip_hdmi(struct drm_encoder *encoder)
@@ -69,12 +99,7 @@ index fe4f9556239ac..cb43e7b47157d 100644
 +			{ 0x0072, 0x0001 },
 +			{ 0x2145, 0x0002 },
 +			{ 0x4061, 0x0002 },
- 		},
--	}, {
--		74250000, {
--			{ 0x0072, 0x0001},
--			{ 0x2145, 0x0002},
--			{ 0x4061, 0x0002}
++		},
 +	},  {
 +		122666000, {
 +			{ 0x0051, 0x0002 },
@@ -82,8 +107,10 @@ index fe4f9556239ac..cb43e7b47157d 100644
 +			{ 0x4061, 0x0002 },
  		},
 -	}, {
--		83500000, {
+-		74250000, {
 -			{ 0x0072, 0x0001},
+-			{ 0x2145, 0x0002},
+-			{ 0x4061, 0x0002}
 +	},  {
 +		147200000, {
 +			{ 0x0051, 0x0002 },
@@ -91,10 +118,8 @@ index fe4f9556239ac..cb43e7b47157d 100644
 +			{ 0x4064, 0x0003 },
  		},
 -	}, {
--		108000000, {
--			{ 0x0051, 0x0002},
--			{ 0x2145, 0x0002},
--			{ 0x4061, 0x0002}
+-		83500000, {
+-			{ 0x0072, 0x0001},
 +	},  {
 +		184000000, {
 +			{ 0x0051, 0x0002 },
@@ -102,7 +127,7 @@ index fe4f9556239ac..cb43e7b47157d 100644
 +			{ 0x4064, 0x0003 },
  		},
 -	}, {
--		106500000, {
+-		108000000, {
 -			{ 0x0051, 0x0002},
 -			{ 0x2145, 0x0002},
 -			{ 0x4061, 0x0002}
@@ -113,7 +138,7 @@ index fe4f9556239ac..cb43e7b47157d 100644
 +			{ 0x4064, 0x0003 },
  		},
 -	}, {
--		146250000, {
+-		106500000, {
 -			{ 0x0051, 0x0002},
 -			{ 0x2145, 0x0002},
 -			{ 0x4061, 0x0002}
@@ -124,10 +149,10 @@ index fe4f9556239ac..cb43e7b47157d 100644
 +			{ 0x5a64, 0x0003 },
  		},
 -	}, {
--		148500000, {
--			{ 0x0051, 0x0003},
--			{ 0x214c, 0x0003},
--			{ 0x4064, 0x0003}
+-		146250000, {
+-			{ 0x0051, 0x0002},
+-			{ 0x2145, 0x0002},
+-			{ 0x4061, 0x0002}
 +	},  {
 +		340000000, {
 +			{ 0x0040, 0x0003 },
@@ -135,12 +160,17 @@ index fe4f9556239ac..cb43e7b47157d 100644
 +			{ 0x5a64, 0x0003 },
  		},
 -	}, {
+-		148500000, {
+-			{ 0x0051, 0x0003},
+-			{ 0x214c, 0x0003},
+-			{ 0x4064, 0x0003}
 +	},  {
 +		600000000, {
 +			{ 0x1a40, 0x0003 },
 +			{ 0x3b4c, 0x0003 },
 +			{ 0x5a64, 0x0003 },
-+		},
+ 		},
+-	}, {
 +	},  {
  		~0UL, {
 -			{ 0x00a0, 0x000a },
@@ -152,55 +182,6 @@ index fe4f9556239ac..cb43e7b47157d 100644
  		},
  	}
  };
-diff --git a/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c b/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-index cb43e7b47157d..a77a46a709809 100644
---- a/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-+++ b/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-@@ -259,7 +259,7 @@ dw_hdmi_rockchip_mode_valid(struct dw_hdmi *hdmi, void *data,
- 	int i;
- 
- 	for (i = 0; mpll_cfg[i].mpixelclock != (~0UL); i++) {
--		if (pclk == mpll_cfg[i].mpixelclock) {
-+		if (pclk <= mpll_cfg[i].mpixelclock) {
- 			valid = true;
- 			break;
- 		}
-diff --git a/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c b/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-index a77a46a709809..ed480f6548f0e 100644
---- a/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-+++ b/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-@@ -180,20 +180,8 @@ static const struct dw_hdmi_mpll_config rockchip_mpll_cfg[] = {
- static const struct dw_hdmi_curr_ctrl rockchip_cur_ctr[] = {
- 	/*      pixelclk    bpp8    bpp10   bpp12 */
- 	{
--		40000000,  { 0x0018, 0x0018, 0x0018 },
--	}, {
--		65000000,  { 0x0028, 0x0028, 0x0028 },
--	}, {
--		66000000,  { 0x0038, 0x0038, 0x0038 },
--	}, {
--		74250000,  { 0x0028, 0x0038, 0x0038 },
--	}, {
--		83500000,  { 0x0028, 0x0038, 0x0038 },
--	}, {
--		146250000, { 0x0038, 0x0038, 0x0038 },
--	}, {
--		148500000, { 0x0000, 0x0038, 0x0038 },
--	}, {
-+		600000000, { 0x0000, 0x0000, 0x0000 },
-+	},  {
- 		~0UL,      { 0x0000, 0x0000, 0x0000},
- 	}
- };
-diff --git a/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c b/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-index ed480f6548f0e..de8720fd7d5d6 100644
---- a/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-+++ b/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-@@ -191,6 +191,7 @@ static const struct dw_hdmi_phy_config rockchip_phy_config[] = {
- 	{ 74250000,  0x8009, 0x0004, 0x0272},
- 	{ 148500000, 0x802b, 0x0004, 0x028d},
- 	{ 297000000, 0x8039, 0x0005, 0x028d},
-+	{ 594000000, 0x8039, 0x0000, 0x019d},
- 	{ ~0UL,	     0x0000, 0x0000, 0x0000}
- };
- 
+-- 
+2.34.1
+
