@@ -127,6 +127,8 @@ echo Install the USB drive auto mounter
 cp -v /tmp/overlay/99-usb-mount.rules /etc/udev/rules.d/
 cp -v /tmp/overlay/usb-mount\@.service /etc/systemd/system/
 mkdir -p /stick
+echo Install udev rules for the serial devices
+cp -v /tmp/overlay/99-serial-devices.rules /etc/udev/rules.d/
 echo ------------------------------------------------------------------------------------
 echo Install Platform IO for node-red user
 python3 -m venv /var/lib/node-red/.platformio/penv
