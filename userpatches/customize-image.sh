@@ -32,7 +32,9 @@ apt update && apt install -y \
     python3-pip \
     python3-venv \
 	python-is-python3 \
-	default-mysql-server default-mysql-client
+	default-mysql-server default-mysql-client \
+    xorg lightdm \
+    libnss3 libnspr4
 
 echo ------------------------------------------------------------------------------------
 echo Disable Armbian interactive config, disable root login, enable display of IP address
@@ -117,18 +119,24 @@ usermod -a -G gpio node-red     # Allow access to gpio
 usermod -a -G dialout node-red  # Allow access to RS-232
 
 cp -v /tmp/overlay/nodered.service /etc/systemd/system
-sed -i '/systemctl\ disable\ armbian-firstrun/i \
-systemctl enable nodered \
-systemctl start nodered \
-mysql --user=root < /var/lib/node-red/Setup-PCB-Production-Test.sql
-' /usr/lib/armbian/armbian-firstrun
 
 echo Install the USB drive auto mounter
 cp -v /tmp/overlay/99-usb-mount.rules /etc/udev/rules.d/
 cp -v /tmp/overlay/usb-mount\@.service /etc/systemd/system/
 mkdir -p /stick
+
 echo Install udev rules for the serial devices
 cp -v /tmp/overlay/99-serial-devices.rules /etc/udev/rules.d/
+
+echo ------------------------------------------------------------------------------------
+echo Installing Electron GUI for NodeRED
+cp -rv /tmp/app/local-node-red-gui /opt/node-red/gui/
+pushd /opt/node-red/gui
+npm install
+popd
+
+cp -v /tmp/overlay/ligthdm.conf /etc/lightdm
+
 echo ------------------------------------------------------------------------------------
 echo Install Platform IO for node-red user
 python3 -m venv /var/lib/node-red/.platformio/penv
@@ -153,3 +161,10 @@ chown -R node-red:node-red /var/lib/node-red/
 echo ------------------------------------------------------------------------------------
 echo Cleaning up
 rm -rfv /tmp/app
+
+# Add commands to be executed on the first boot of the system.
+sed -i '/systemctl\ disable\ armbian-firstrun/i \
+systemctl enable nodered \
+systemctl start nodered \
+mysql --user=root < /var/lib/node-red/Setup-PCB-Production-Test.sql
+' /usr/lib/armbian/armbian-firstrun
