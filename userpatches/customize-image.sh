@@ -135,7 +135,7 @@ pushd /opt/node-red/gui
 npm install
 popd
 
-cp -v /tmp/overlay/ligthdm.conf /etc/lightdm
+cp -v /tmp/overlay/lightdm.conf /etc/lightdm/
 
 echo ------------------------------------------------------------------------------------
 echo Install Platform IO for node-red user
