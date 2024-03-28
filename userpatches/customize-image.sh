@@ -35,7 +35,8 @@ apt update && apt install -y \
 	default-mysql-server default-mysql-client \
     xorg lightdm \
     libnss3 libnspr4 \
-    cups qrencode imagemagick
+    cups qrencode imagemagick hplip
+# hplip is only needed for testing with an HP OfficeJet until we hae the real label printer.
 
 echo ------------------------------------------------------------------------------------
 echo Disable Armbian interactive config, disable root login, enable display of IP address
