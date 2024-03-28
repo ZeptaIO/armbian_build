@@ -100,6 +100,7 @@ fi
 mkdir -p /opt/node-red/base
 pushd /opt/node-red/base
 npm install node-red
+npm install uuid
 # Install additional useful palette modules:
 npm install node-red-contrib-modbus
 npm install node-red-node-serialport
