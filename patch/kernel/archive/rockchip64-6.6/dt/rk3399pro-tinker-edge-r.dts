@@ -280,9 +280,9 @@
 		<000000000 0x0000 0x0000 0x0000>;
 };
 
-&hdmi_in_vopl {
-	status = "disabled";
-};
+// &hdmi_in_vopl {
+// 	status = "disabled";
+// };
 
 &vopb {	
 	status = "okay";
