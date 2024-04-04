@@ -140,7 +140,6 @@ npm install
 popd
 
 cp -v /tmp/overlay/lightdm.conf /etc/lightdm/
-cp -v /tmp/overlay/10-monitor.conf /etc/X11/xorg.conf.d/
 
 echo ------------------------------------------------------------------------------------
 echo Install Platform IO for node-red user
