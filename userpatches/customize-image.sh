@@ -101,7 +101,6 @@ fi
 mkdir -p /opt/node-red/base
 pushd /opt/node-red/base
 npm install node-red
-npm install uuid
 # Install additional useful palette modules:
 npm install node-red-contrib-modbus
 npm install node-red-node-serialport
@@ -160,6 +159,10 @@ cp -v /tmp/overlay/armbian_build_git_version /var/lib/node-red
 
 echo Installing Production Configuration:
 cp -av /tmp/app/pcb_production_v1/. /var/lib/node-red/
+pushd /var/lib/node-red/.node-red
+npm install
+npm install uuid
+popd
 
 chown -R node-red:node-red /var/lib/node-red/
 echo ------------------------------------------------------------------------------------
