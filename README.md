@@ -2,7 +2,7 @@
 
 ## Overview
 * This repository contains the customized Armbian build system, used for our test stands. 
-* [How to use the resulting image](doc/FirmwareUpdate_PCB_TestStandV1/FirmwareUpdate.md)
+* Description how to update the firmware in our test stands: [How to use the resulting image](doc/FirmwareUpdate_PCB_TestStandV1/FirmwareUpdate.md)
 
 ## Getting Started 
 * The entry point is [build.sh](build.sh)
