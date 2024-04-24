@@ -1,3 +1,16 @@
+# Zepta Description of this Repository
+
+## Overview
+* This repository contains the customized Armbian build system, used for our test stands. 
+* [How to use the resulting image](doc/FirmwareUpdate_PCB_TestStandV1/FirmwareUpdate.md)
+
+## Getting Started 
+* The entry point is [build.sh](build.sh)
+* The entry point for customizing is [userpatches/customize-image.sh](userpatches/customize-image.sh)
+* Additional files go to [userpatches/overlay](userpatches/overlay)
+  
+# Original Armbian README.md
+
 <p align="center">
   <a href="#build-framework">
   <img src=".github/armbian-logo.png" alt="Armbian logo" width="144">
