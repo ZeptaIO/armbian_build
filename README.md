@@ -5,9 +5,19 @@
 * Description how to update the firmware in our test stands: [How to use the resulting image](doc/FirmwareUpdate_PCB_TestStandV1/FirmwareUpdate.md)
 
 ## Getting Started 
+* For each device, we have a branch here:
+  - `baitchecker_production_computer`: Build for the PCB Test Stand V1
 * The entry point is [build.sh](build.sh)
 * The entry point for customizing is [userpatches/customize-image.sh](userpatches/customize-image.sh)
 * Additional files go to [userpatches/overlay](userpatches/overlay)
+
+## Catching up with Upstream Armbian build repository
+Since Armbian directly pulls from kernel git, the build might break from time to time since the patches in our branch(es) are outdated. Then we need to update them
+
+* On our [Github Fork Repo](https://github.com/ZeptaIO/armbian_build), switch to the release branch (currently `v24.02`), from which our device build was derived.
+* Press `Sync fork`
+* On your local repository, do a git fetch.
+* Merge `v24.02` into the device branch(es)
   
 # Original Armbian README.md
 
