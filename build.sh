@@ -31,4 +31,4 @@ git log -1 --format=%H > $HERE/userpatches/overlay/armbian_build_git_version
 popd
 # Build a minimal image without asking questions. 
 # The content itself is customized via userpatches/customize_image.sh
-$HERE/compile.sh BOARD=rockpi-4b BRANCH=current RELEASE=bookworm KERNEL_CONFIGURE=no BUILD_MINIMAL=yes COMPRESS_OUTPUTIMAGE=xz
+$HERE/compile.sh BOARD=rockpi-4cplus BRANCH=current RELEASE=bookworm KERNEL_CONFIGURE=no BUILD_MINIMAL=yes COMPRESS_OUTPUTIMAGE=xz
