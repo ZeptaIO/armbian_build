@@ -1,8 +1,8 @@
-name: Build Image for Production Computer
+name: Build Image for Endurance Tests Computer
 
 on:
   push:
-    branches: [ "baitchecker_production_computer" ]
+    branches: [ "endurance_tests_computer" ]
   workflow_dispatch:
 
 jobs:
