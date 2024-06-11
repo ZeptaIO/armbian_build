@@ -165,3 +165,4 @@ systemctl enable nodered \
 systemctl start nodered \
 systemctl enable backendforwarder \
 systemctl start backendforwarder
+' /usr/lib/armbian/armbian-firstrun
