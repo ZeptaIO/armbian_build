@@ -33,11 +33,8 @@ apt update && apt install -y \
     python3-venv \
 	python-is-python3 \
 	default-mysql-server default-mysql-client \
-    xorg lightdm \
-    libnss3 libnspr4 \
-    cups qrencode imagemagick hplip
-# hplip is only needed for testing with an HP OfficeJet until we hae the real label printer.
-
+    gnuplot
+    
 echo ------------------------------------------------------------------------------------
 echo Disable Armbian interactive config, disable root login, enable display of IP address
 rm -vf /root/.not_logged_in_yet
