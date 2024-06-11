@@ -132,15 +132,6 @@ echo Install udev rules for the serial devices
 cp -v /tmp/overlay/99-serial-devices.rules /etc/udev/rules.d/
 
 echo ------------------------------------------------------------------------------------
-echo Installing Electron GUI for NodeRED
-cp -rv /tmp/app/local-node-red-gui /opt/node-red/gui/
-pushd /opt/node-red/gui
-npm install
-popd
-
-cp -v /tmp/overlay/lightdm.conf /etc/lightdm/
-
-echo ------------------------------------------------------------------------------------
 echo Install Platform IO for node-red user
 python3 -m venv /var/lib/node-red/.platformio/penv
 /var/lib/node-red/.platformio/penv/bin/python3 -m pip install --upgrade pip setuptools
