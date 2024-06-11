@@ -34,7 +34,7 @@ apt update && apt install -y \
 	python-is-python3 \
 	default-mysql-server default-mysql-client \
     gnuplot
-    
+
 echo ------------------------------------------------------------------------------------
 echo Disable Armbian interactive config, disable root login, enable display of IP address
 rm -vf /root/.not_logged_in_yet
@@ -116,7 +116,6 @@ cp -v /tmp/overlay/99-gpio-permissions.rules /etc/udev/rules.d/
 useradd --base-dir /var/lib/ --create-home node-red
 usermod -a -G gpio node-red     # Allow access to gpio
 usermod -a -G dialout node-red  # Allow access to RS-232
-usermod -a -G lpadmin node-red  # Allow printer configuration.
 
 cp -v /tmp/overlay/nodered.service /etc/systemd/system
 
