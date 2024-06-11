@@ -131,6 +131,9 @@ mkdir -p /stick
 echo Install udev rules for the serial devices
 cp -v /tmp/overlay/99-serial-devices.rules /etc/udev/rules.d/
 
+echo Install Backend DB Forwarder Service
+cp -v /tmp/app/endurance_test/backend-db/backendforwarder.service /etc/systemd/system
+
 echo ------------------------------------------------------------------------------------
 echo Install Platform IO for node-red user
 python3 -m venv /var/lib/node-red/.platformio/penv
@@ -148,8 +151,8 @@ echo bc_production_configuration_git_version: $bc_production_configuration_git_v
 echo $bc_production_configuration_git_version > /var/lib/node-red/bc_production_configuration_git_version
 cp -v /tmp/overlay/armbian_build_git_version /var/lib/node-red
 
-echo Installing Production Configuration:
-cp -av /tmp/app/pcb_production_v1/. /var/lib/node-red/
+echo Installing Endurance Test Configuration:
+cp -av /tmp/app/endurance_test/. /var/lib/node-red/
 pushd /var/lib/node-red/.node-red
 npm install
 npm install uuid
@@ -164,5 +167,5 @@ rm -rfv /tmp/app
 sed -i '/systemctl\ disable\ armbian-firstrun/i \
 systemctl enable nodered \
 systemctl start nodered \
-mysql --user=root < /var/lib/node-red/Setup-PCB-Production-Test.sql
-' /usr/lib/armbian/armbian-firstrun
+systemctl enable backendforwarder \
+systemctl start backendforwarder
