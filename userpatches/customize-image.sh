@@ -109,6 +109,8 @@ npm install node-red-contrib-protobuf
 npm install node-red-dashboard
 npm install node-red-contrib-ui-actions
 npm install node-red-node-mysql
+npm install node-wifi
+npm install node-red-node-ui-list
 popd
 
 # Prepare access to gpio
@@ -117,9 +119,11 @@ cp -v /tmp/overlay/99-gpio-permissions.rules /etc/udev/rules.d/
 
 # Create node-red user and it's environment
 useradd --base-dir /var/lib/ --create-home node-red
+usermod -s /bin/bash node-red
 usermod -a -G gpio node-red     # Allow access to gpio
 usermod -a -G dialout node-red  # Allow access to RS-232
 usermod -a -G lpadmin node-red  # Allow printer configuration.
+usermod -a -G netdev node-red   # Allow WiFi configuration.
 
 cp -v /tmp/overlay/nodered.service /etc/systemd/system
 
@@ -130,6 +134,13 @@ mkdir -p /stick
 
 echo Install udev rules for the serial devices
 cp -v /tmp/overlay/99-serial-devices.rules /etc/udev/rules.d/
+
+# Install hack-fix to run nmcli from node-red without 'insuffcient privileges' errors:
+mv -v /usr/bin/nmcli /usr/bin/nmcli.orig
+cp -v /tmp/overlay/nmcli.sh /usr/bin/nmcli
+chmod 755 /usr/bin/nmcli
+cp -v /tmp/overlay/node-red-nmcli.sudoers /etc/sudoers.d/node-red-nmcli
+chmod 440 /etc/sudoers.d/node-red-nmcli
 
 echo ------------------------------------------------------------------------------------
 echo Installing Electron GUI for NodeRED
