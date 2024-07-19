@@ -27,7 +27,7 @@ env
 echo ------------------------------------------------------------------------------------
 echo Installing additional packages
 apt update && apt install -y \
-	git vim vnstat net-tools \
+	git vim vnstat net-tools patch \
 	python3 \
     python3-pip \
     python3-venv \
@@ -35,7 +35,7 @@ apt update && apt install -y \
 	default-mysql-server default-mysql-client \
     xorg lightdm \
     libnss3 libnspr4 \
-    cups qrencode imagemagick hplip
+    cups qrencode imagemagick hplip 
 # hplip is only needed for testing with an HP OfficeJet until we hae the real label printer.
 
 echo ------------------------------------------------------------------------------------
