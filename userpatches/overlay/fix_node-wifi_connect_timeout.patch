@@ -1,0 +1,12 @@
+diff -ru a/node_modules/node-wifi/src/linux-connect.js b/node_modules/node-wifi/src/linux-connect.js
+--- a/node_modules/node-wifi/src/linux-connect.js	2024-07-19 16:29:54.747400791 +0200
++++ b/node_modules/node-wifi/src/linux-connect.js	2024-07-19 16:31:18.674789702 +0200
+@@ -4,7 +4,7 @@
+ function connectToWifi(config, ap, callback) {
+   const args = [];
+   args.push('-w');
+-  args.push('10');
++  args.push('120');
+   args.push('device');
+   args.push('wifi');
+   args.push('connect');

@@ -109,7 +109,6 @@ npm install node-red-contrib-protobuf
 npm install node-red-dashboard
 npm install node-red-contrib-ui-actions
 npm install node-red-node-mysql
-npm install node-wifi
 npm install node-red-node-ui-list
 popd
 
@@ -173,6 +172,8 @@ cp -av /tmp/app/pcb_production_v1/. /var/lib/node-red/
 pushd /var/lib/node-red/.node-red
 npm install
 npm install uuid
+npm install node-wifi
+patch -p1 < /tmp/overlay/fix_node-wifi_connect_timeout.patch
 popd
 
 chown -R node-red:node-red /var/lib/node-red/
